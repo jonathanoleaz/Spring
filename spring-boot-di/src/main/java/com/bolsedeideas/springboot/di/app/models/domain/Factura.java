@@ -1,5 +1,6 @@
 package com.bolsedeideas.springboot.di.app.models.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,13 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.context.annotation.SessionScope;
 
 /*Componente de Spring*/
-/*RequestScope: componente en ambito de la peticion*/
+/*RequestScope: componente en ambito de la peticion o request: dura lo que dura una peticion http*/
+/*SessionScope: debe implementar la interfaz serializable.*/
+/*ApplicationScope: se guarda en contexto del servlet, no de la aplicacion de Spring*/
 @Component
 @RequestScope
-public class Factura {
+public class Factura implements Serializable{
+
+	/**
+	 * Es un atributo que se maneja como identificador
+	 */
+	private static final long serialVersionUID = -4511426373268604849L;
 
 	@Value("${factura.descripcion}")
 	private String descripcion;
@@ -33,7 +43,7 @@ public class Factura {
 		cliente.setNombre(cliente.getNombre().concat(" ").concat("Se&ntilde;or"));
 		descripcion = descripcion.concat(" del cliente: ").concat(cliente.getNombre());
 	}
-	
+	/*@PreDestroy: se ejecuta al destruir el objeto o instancia*/
 	@PreDestroy
 	public void destruir() {
 		System.out.println("Factura destruida");

@@ -12,6 +12,7 @@ import com.bolsedeideas.springboot.di.app.models.domain.Factura;
 @RequestMapping("/factura")
 public class FacturaController {
 
+	/*Por defecto los componentes son singleton: una sola instancia en toda la aplicacion*/
 	/*Se inyecta en el controlador la clase Factura*/
 	@Autowired
 	private Factura factura;
