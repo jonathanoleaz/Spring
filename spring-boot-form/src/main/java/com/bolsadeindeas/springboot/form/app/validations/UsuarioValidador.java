@@ -17,7 +17,9 @@ public class UsuarioValidador implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-       // Usuario usuario = (Usuario) target;
+
+        /*Se comenta esta logica de validacion pues ahora se valida con anotaciones */
+        //Usuario usuario = (Usuario) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "nombre", "requerido.usuario.nombre");
 

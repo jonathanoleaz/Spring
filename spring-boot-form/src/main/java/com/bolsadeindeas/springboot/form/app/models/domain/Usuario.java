@@ -1,12 +1,22 @@
 package com.bolsadeindeas.springboot.form.app.models.domain;
 
+import java.util.Date;
+
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.bolsadeindeas.springboot.form.app.validations.IdentificadorRegex;
+import com.bolsadeindeas.springboot.form.app.validations.RequeridoRegex;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Usuario {
 
@@ -28,9 +38,27 @@ public class Usuario {
 	//@NotEmpty(message = "el nombre no puede ser vacio")
 	private String nombre;
 
-	@NotEmpty
+	//@NotEmpty
+	@RequeridoRegex
 	private String apellido;
 
+	/*NotNull para objetos, NotEmpty para primitivos */
+	@NotNull
+	@Min(5)
+	@Max(5000)
+	private Integer cuenta;
+
+	@NotNull
+	//@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Past
+	private Date fechaNacimiento;
+
+	/*@Valid especifica que tambien deben validarse las propiedades de este atributo (pais)
+	que al ser una clase a la que le creamos una validacion en su id, la tomara en cuenta */
+	@NotNull
+	@Valid
+	private Pais pais;
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -77,5 +105,29 @@ public class Usuario {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Integer getCuenta() {
+		return cuenta;
+	}
+
+	public void setCuenta(Integer cuenta) {
+		this.cuenta = cuenta;
+	}
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
 	}
 }
