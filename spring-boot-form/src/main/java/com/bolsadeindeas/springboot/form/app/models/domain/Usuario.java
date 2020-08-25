@@ -56,7 +56,6 @@ public class Usuario {
 	/*@Valid especifica que tambien deben validarse las propiedades de este atributo (pais)
 	que al ser una clase a la que le creamos una validacion en su id, la tomara en cuenta */
 	@NotNull
-	@Valid
 	private Pais pais;
 	
 	public String getNombre() {

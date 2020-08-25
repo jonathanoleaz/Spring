@@ -39,7 +39,7 @@ public class PaisServiceImpl implements PaisService {
                 break;
             }
         }
-        return null;
+        return resultado;
     }
 
     

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.bolsadeindeas.springboot.form.app.editors.NombreMayusculasEditor;
+import com.bolsadeindeas.springboot.form.app.editors.PaisPropertyEditor;
 import com.bolsadeindeas.springboot.form.app.models.domain.Pais;
 import com.bolsadeindeas.springboot.form.app.models.domain.Usuario;
 import com.bolsadeindeas.springboot.form.app.services.PaisService;
@@ -40,6 +41,9 @@ public class FormController {
 	@Autowired
 	private PaisService paisService;
 
+	@Autowired
+	private PaisPropertyEditor paisEditor;
+
 	/*Cuando se iniciliza el binder, binder es como un portafolio donde se realizan validaciones */
 	@InitBinder
 	public void InitBinder(WebDataBinder binder){
@@ -52,8 +56,10 @@ public class FormController {
 		 los atributos tipo fecha */
 		binder.registerCustomEditor(Date.class, "fechaNacimiento",new CustomDateEditor(dateFormat, false));
 
-
+		//binder.registerCustomEditor(String.class, "nombre", new NombreMayusculasEditor());
 		binder.registerCustomEditor(String.class, new NombreMayusculasEditor());
+	
+		binder.registerCustomEditor(Pais.class, "pais", paisEditor);
 	}
 
 	@ModelAttribute("paises")

@@ -11,13 +11,13 @@
 		<div>
 			<label for="pais"> Pa&iacute;s </label>
 			<div>
-				<select id="pais" th:field="*{pais.id}">
+				<select id="pais" th:field="*{pais}">
 					<!---Se itera por cada pais-->
 					<option value="">Seleccionar un pa&iacute;s</option>
 					<option th:each="pais: ${listaPaises}" th:text="${pais.nombre}" th:value="${pais.id}"></option>
 				</select>
 			</div>
-			<div th:if="${#fields.hasErrors('pais.id')}" th:errors="*{pais.id}"></div>
+			<div th:if="${#fields.hasErrors('pais')}" th:errors="*{pais}"></div>
 		</div>
 
 		<div>

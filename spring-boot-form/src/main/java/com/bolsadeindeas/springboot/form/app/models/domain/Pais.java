@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 public class Pais {
 
-    @NotNull
+   // @NotNull
     private Integer id;
 
     private String codigo;
