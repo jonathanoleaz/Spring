@@ -1,8 +1,8 @@
 package com.bolsadeindeas.springboot.form.app.models.domain;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -10,22 +10,19 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.bolsadeindeas.springboot.form.app.validations.IdentificadorRegex;
 import com.bolsadeindeas.springboot.form.app.validations.RequeridoRegex;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 public class Usuario {
 
-	//@Pattern(regexp = "[0-9]{2}[.][\\d]{3}[.][\\d]{3}[-][a-zA-Z]{1}")
+	// @Pattern(regexp = "[0-9]{2}[.][\\d]{3}[.][\\d]{3}[-][a-zA-Z]{1}")
 	@IdentificadorRegex
 	private String identificador;
 
 	@NotBlank
-	@Size(min=3, max=8)
+	@Size(min = 3, max = 8)
 	private String username;
 
 	@NotEmpty
@@ -35,29 +32,41 @@ public class Usuario {
 	@Email
 	private String email;
 
-	//@NotEmpty(message = "el nombre no puede ser vacio")
+	// @NotEmpty(message = "el nombre no puede ser vacio")
 	private String nombre;
 
-	//@NotEmpty
+	// @NotEmpty
 	@RequeridoRegex
 	private String apellido;
 
-	/*NotNull para objetos, NotEmpty para primitivos */
+	/* NotNull para objetos, NotEmpty para primitivos */
 	@NotNull
 	@Min(5)
 	@Max(5000)
 	private Integer cuenta;
 
 	@NotNull
-	//@DateTimeFormat(pattern = "yyyy-MM-dd")
+	// @DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Past
 	private Date fechaNacimiento;
 
-	/*@Valid especifica que tambien deben validarse las propiedades de este atributo (pais)
-	que al ser una clase a la que le creamos una validacion en su id, la tomara en cuenta */
+	private Boolean habilitar;
+	/*
+	 * @Valid especifica que tambien deben validarse las propiedades de este
+	 * atributo (pais) que al ser una clase a la que le creamos una validacion en su
+	 * id, la tomara en cuenta
+	 */
 	@NotNull
 	private Pais pais;
-	
+
+	@NotEmpty
+	private List<Rol> roles;
+
+	@NotEmpty
+	private String genero;
+
+	private String valorSecreto;
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -129,4 +138,42 @@ public class Usuario {
 	public void setPais(Pais pais) {
 		this.pais = pais;
 	}
+
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
+
+	public Boolean getHabilitar() {
+		return habilitar;
+	}
+
+	public void setHabilitar(Boolean habilitar) {
+		this.habilitar = habilitar;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getValorSecreto() {
+		return valorSecreto;
+	}
+
+	public void setValorSecreto(String valorSecreto) {
+		this.valorSecreto = valorSecreto;
+	}
+
+	
+
+	
 }

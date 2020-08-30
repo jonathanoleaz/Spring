@@ -9,6 +9,23 @@
 	<form th:action="@{/form}" th:object="${usuario}" method="post">
 
 		<div>
+			<label> Género </label>
+			<div th:each="gen: ${genero}">
+				<input type="radio" th:field="*{genero}" th:value="${gen}">
+				<label th:for="${#ids.prev('genero')}" th:text="${gen}"></label>
+			</div>
+			<div th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}"></div>
+		</div>
+
+
+		<div>
+			<label for="habilitar"> Habilitar </label>
+			<div>
+				<input type="checkbox" id="habilitar" th:field="*{habilitar}">
+			</div>
+		</div>
+
+		<div>
 			<label for="pais"> Pa&iacute;s </label>
 			<div>
 				<select id="pais" th:field="*{pais}">
@@ -18,6 +35,15 @@
 				</select>
 			</div>
 			<div th:if="${#fields.hasErrors('pais')}" th:errors="*{pais}"></div>
+		</div>
+
+		<div>
+			<label > Roles </label>
+			<div th:each="role: ${listaRoles}">
+				<input type="checkbox" th:field="*{roles}" th:value="${role.id}" th:checked="${#lists.contains(usuario.roles, role)}">
+				<label th:text="${role.nombre}" th:for="${#ids.prev('roles')}"></label>
+			</div>
+			<div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
 		</div>
 
 		<div>
@@ -90,6 +116,7 @@
 			</div>
 		</div>
 
+		<input type="hidden" id="valorSecreto" th:field="*{valorSecreto}">
 	</form>
 </body>
 </html>
