@@ -11,37 +11,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaisServiceImpl implements PaisService {
 
-    private List<Pais> lista;
-    public PaisServiceImpl() {
+	private List<Pais> lista;
 
-        this.lista = Arrays.asList(
-			new Pais(1, "MX","México"), 
-			new Pais(2, "CH", "Chile"), 
-			new Pais(3, "CO", "Colombia"), 
-			new Pais(4, "CA", "Canada")
-        );
-        
-    }
+	public PaisServiceImpl() {
 
+		this.lista = Arrays.asList(new Pais(1, "MX", "México"), new Pais(2, "CH", "Chile"),
+				new Pais(3, "CO", "Colombia"), new Pais(4, "CA", "Canada"));
 
-    
-    @Override
-    public List<Pais> listar() {
-        return lista;
-    }
+	}
 
-    @Override
-    public Pais obtenerPorId(Integer id) {
-        Pais resultado = null;
-        for(Pais pais: this.lista){
-            if(id==pais.getId()){
-                resultado = pais;
-                break;
-            }
-        }
-        return resultado;
-    }
+	@Override
+	public List<Pais> listar() {
+		return lista;
+	}
 
-    
-    
+	@Override
+	public Pais obtenerPorId(Integer id) {
+		Pais resultado = null;
+		for (Pais pais : this.lista) {
+			if (id == pais.getId()) {
+				resultado = pais;
+				break;
+			}
+		}
+		return resultado;
+	}
+
 }
