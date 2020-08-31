@@ -4,10 +4,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title th:text="${titulo}"></title>
-	<link rel="stylesheet" th:ref="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" href="/css/bootstrap.min.css" th:ref="@{/css/bootstrap.min.css}">
 </head>
 
 <body>
+	<section th:replace="componentes/tiempo :: interceptor"></section>
 	<div class="container">
 		<h3 th:text="${titulo}"></h3>
 

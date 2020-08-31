@@ -1,6 +1,5 @@
 package com.bolsadeindeas.springboot.form.app.models.domain;
 
-import javax.validation.constraints.NotNull;
 
 public class Pais {
 
