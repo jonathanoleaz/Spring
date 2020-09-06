@@ -10,29 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bolsadeideas.springboot.app.models.entity.Cliente;
 
-/*Se marca la clase como componente de acceso a datos (componente DAO)*/
+/*Se marca la clase como componente de acceso a datos (componente DAO)
 @Repository
 public class ClienteDaoImpl implements IClienteDao {
 
 	@PersistenceContext
 	private EntityManager em;
 
-	@Transactional(readOnly = true)
 	@Override
 	public List<Cliente> findAll() {
 		return em.createQuery("from Cliente").getResultList();
-	}
-
-	@Override
-	@Transactional
-	public void save(Cliente cliente) {
-		if(cliente.getId()!=null && cliente.getId() > 0) {
-			em.merge(cliente);
-		}else {
-			em.persist(cliente);
-		}
-		
-
 	}
 
 	@Override
@@ -40,4 +27,19 @@ public class ClienteDaoImpl implements IClienteDao {
 		return em.find(Cliente.class, id);
 	}
 
-}
+	@Override
+	public void save(Cliente cliente) {
+		if (cliente.getId() != null && cliente.getId() > 0) {
+			em.merge(cliente);
+		} else {
+			em.persist(cliente);
+		}
+	}
+
+	@Override
+	public void delete(Long id) {
+		Cliente cliente = findOne(id);
+		em.remove(cliente);
+	}
+
+}*/
