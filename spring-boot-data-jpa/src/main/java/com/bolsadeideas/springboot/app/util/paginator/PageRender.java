@@ -1,6 +1,5 @@
 package com.bolsadeideas.springboot.app.util.paginator;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +55,8 @@ public class PageRender<T> {
             }
         }
 
-        System.out.println("desde: "+desde);
-        System.out.println("hasta: "+hasta);
+        /*System.out.println("desde: "+desde);
+        System.out.println("hasta: "+hasta);*/
 		for (int i = 0; i < hasta; i++) {            
 			paginas.add(new PageItem(desde + i, paginaActual == desde + i));
 		}
