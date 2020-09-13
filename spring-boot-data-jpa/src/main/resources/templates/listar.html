@@ -31,9 +31,11 @@
 							<td th:text="${cliente.apellido}"></td>
 							<td th:text="${cliente.email}"></td>
 							<td th:text="${cliente.createdAt}"></td>
-							<td><a class="btn btn-primary" th:href="@{/form/} + ${cliente.id}">Editar</a>
+							<td>
+								<a class="btn btn-primary" th:href="@{/form/} + ${cliente.id}">Editar</a>
 								<a class="btn btn-danger" th:href="@{/eliminar/} + ${cliente.id}"
 									onclick="return confirm('¿Desea eliminar este registro?')">Eliminar</a>
+									<a class="btn btn-success" th:href="@{/factura/form/} + ${cliente.id}">Crear factura</a>
 							</td>
 						</tr>
 					</tbody>

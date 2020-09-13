@@ -46,7 +46,7 @@ public class ClienteController {
 	@Autowired
 	private UploadFileServiceImpl uploadFileServiceImpl;
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	//private final Logger log = LoggerFactory.getLogger(getClass());
 
 	/*
 	 * Se usa expresion regular en la url para que spring no trunce o corte la
@@ -57,7 +57,6 @@ public class ClienteController {
 	 * metodo mapea a la url '/uploads/{filename}' , misma que esta contenida en el
 	 * atriuto th:src del <img> de la vista ver
 	 */
-	/* Notar que */
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
 
@@ -65,7 +64,6 @@ public class ClienteController {
 		try {
 			recurso = uploadFileServiceImpl.load(filename);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -143,7 +141,6 @@ public class ClienteController {
 			try {
 				uniqueFileName = uploadFileServiceImpl.copy(foto);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			cliente.setFoto(uniqueFileName);
@@ -196,7 +193,6 @@ public class ClienteController {
 				clienteService.delete(id);
 				flash.addFlashAttribute("success", "Se eliminó el cliente");
 			}
-
 		}
 
 		return "redirect:/listar";
