@@ -138,4 +138,10 @@ public class Cliente implements Serializable {
 		facturas = new ArrayList<Factura>();
 	}
 
+	@Override
+	public String toString() {
+		return "Cliente [apellido=" + apellido + ", createdAt=" + createdAt + ", email=" + email + ", facturas="
+				+ facturas + ", foto=" + foto + ", id=" + id + ", nombre=" + nombre + "]";
+	}
+
 }
