@@ -78,7 +78,7 @@ public class FacturaController {
             return "factura/form";
         }
 
-        if(itemId==null || itemId.length==0){
+        if (itemId == null || itemId.length == 0) {
             model.addAttribute("titulo", "Crear factura error");
             model.addAttribute("error", "Error: la factura debe tener al menos una linea");
             return "factura/form";
@@ -105,14 +105,14 @@ public class FacturaController {
         return "redirect:/ver/" + factura.getCliente().getId();
     }
 
-
     @GetMapping("/ver/{id}")
-    public String ver(@PathVariable(value="id") Long id,
-    Model model,
-    RedirectAttributes flash){
-        Factura factura=clienteService.findFacturaById(id);
+    public String ver(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+        // Ahora obtenemos la factura con todas sus lineas y sus lineas con todos sus
+        // productos de una vez, para que no los haga uno por uno, pues esta activado
+        // lazy
+        Factura factura=clienteService.fetchByIdWithClienteWithItemFacturaWithProducto(id);     // Factura factura=clienteService.findFacturaById(id);
 
-        if(factura==null){
+        if (factura == null) {
             flash.addFlashAttribute("error", "La factura no existe");
             return "redirect:/listar";
         }
@@ -121,5 +121,19 @@ public class FacturaController {
         model.addAttribute("titulo", "Factura: ".concat(factura.getDescripcion()));
 
         return "factura/ver";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+        Factura factura = clienteService.findFacturaById(id);
+        if (factura != null) {
+            clienteService.deleteFactura(id);
+            flash.addFlashAttribute("success", "Factura eliminada");
+
+            return "redirect:/ver/" + factura.getCliente().getId();
+        }
+
+        flash.addFlashAttribute("error", "La factura no existe");
+        return "redirect:/listar";
     }
 }
