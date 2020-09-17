@@ -1,9 +1,10 @@
 package com.bolsadeideas.springboot.app;
 
+import javax.sql.DataSource;
+
 import com.bolsadeideas.springboot.app.auth.handler.LoginSuccesHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -29,10 +30,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginSuccesHandler loginSuccesHandler;
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     /* Implementacion para las rutas */
     @Override
@@ -49,27 +51,35 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                  * .antMatchers("/eliminar/**").hasAnyRole("ADMIN")
                  * .antMatchers("/factura/**").hasAnyRole("ADMIN")
                  */
-                .anyRequest().authenticated().and().formLogin().successHandler(loginSuccesHandler).loginPage("/login")
-                .permitAll().and().logout().permitAll().and().exceptionHandling().accessDeniedPage("/error_403");
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().successHandler(loginSuccesHandler).loginPage("/login").permitAll()
+                .and()
+                .logout().permitAll().and().exceptionHandling().accessDeniedPage("/error_403");
     }
 
     /** Se guardan usuarios en memoria */
     @Autowired
     public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
 
-        PasswordEncoder encoder = passwordEncoder();
+        builder.jdbcAuthentication().dataSource(dataSource)
+        .passwordEncoder(passwordEncoder)
+        .usersByUsernameQuery("select username, password, enabled from users where username=?")
+        .authoritiesByUsernameQuery("select user.username, aut.authority from authorities aut inner join users user on (aut.user_id = user.id) where user.username=?");
+
+        //PasswordEncoder encoder = this.passwordEncoder;
         /**
          * expresion lambda: por cada usuario registrado, se hashea la contrasenia.
          * Cada que se asigne una contrasenia a users, se hashea la contrasenia con
          * passwordEncoder
-         */
+         
         UserBuilder users = User.builder().passwordEncoder(password -> {
             return encoder.encode(password);
-        });
+        });*/
 
-        /* Configuramos el Creamos usuarios en memoria */
+        /* Configuramos el builder creando usuarios en memoria
         builder.inMemoryAuthentication().withUser(users.username("admin").password("password").roles("ADMIN", "USER"))
-                .withUser(users.username("jonathanoleaz").password("password").roles("USER"));
+                .withUser(users.username("jonathanoleaz").password("password").roles("USER")); */
 
     }
 
