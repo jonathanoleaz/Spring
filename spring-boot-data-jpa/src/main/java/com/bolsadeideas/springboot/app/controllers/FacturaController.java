@@ -12,6 +12,7 @@ import com.bolsadeideas.springboot.app.models.entity.Producto;
 import com.bolsadeideas.springboot.app.models.service.IClienteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +26,16 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/*Con sessionAttributes se marcan atributos generalmente del model que persistiran mientras dure la peticion, y hasta marcar status.setComplete(); se limpiaran  */
+/**
+ * Con la forma de colocar esta anotacion, toda la administracion de facturas se
+ * restringue al rol ADMIN
+ */
+/*
+ * Con sessionAttributes se marcan atributos generalmente del model que
+ * persistiran mientras dure la peticion, y hasta marcar status.setComplete();
+ * se limpiaran
+ */
+@Secured("ROLE_ADMIN")
 @Controller
 @RequestMapping("/factura")
 @SessionAttributes("factura")
@@ -110,7 +120,8 @@ public class FacturaController {
         // Ahora obtenemos la factura con todas sus lineas y sus lineas con todos sus
         // productos de una vez, para que no los haga uno por uno, pues esta activado
         // lazy
-        Factura factura=clienteService.fetchByIdWithClienteWithItemFacturaWithProducto(id);     // Factura factura=clienteService.findFacturaById(id);
+        Factura factura = clienteService.fetchByIdWithClienteWithItemFacturaWithProducto(id); // Factura
+                                                                                              // factura=clienteService.findFacturaById(id);
 
         if (factura == null) {
             flash.addFlashAttribute("error", "La factura no existe");

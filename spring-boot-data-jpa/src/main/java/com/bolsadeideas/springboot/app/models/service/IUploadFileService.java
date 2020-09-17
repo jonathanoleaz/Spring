@@ -9,7 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IUploadFileService {
     public Resource load(String filename) throws MalformedURLException;
 
-    /**Metodo para dejar foto en el servidor y devolver el nombre actualizado del archivo con el UUID */
+    /**
+     * Metodo para dejar foto en el servidor y devolver el nombre actualizado del
+     * archivo con el UUID
+     */
     public String copy(MultipartFile file) throws IOException;
 
     public boolean delete(String filename);

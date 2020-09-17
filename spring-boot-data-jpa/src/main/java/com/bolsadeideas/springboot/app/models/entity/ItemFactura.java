@@ -16,9 +16,9 @@ import javax.persistence.Table;
 public class ItemFactura implements Serializable {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private Integer cantidad;
 
     /* Muchos itemFactura a un producto */

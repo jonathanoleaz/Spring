@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="layout/layout :: head">
 </head>
@@ -16,15 +16,15 @@
 			</div>
 			<div class="card-body">
 				<img class="img-thumbnail" style="max-width: 25%;" th:if="${#strings.length(cliente.foto)}" th:src="@{'/uploads/'}+${cliente.foto}"
-					th:alt="${cliente.foto}" />
-
+				th:alt="${cliente.foto}" />
+				
 				<ul class="list-group">
 					<li class="list-group-item" th:text="${cliente.nombre}"></li>
 					<li class="list-group-item" th:text="${cliente.apellido}"></li>
 					<li class="list-group-item" th:text="${cliente.email}"></li>
 					<li class="list-group-item" th:text="${cliente.createdAt}"></li>
 				</ul>
-
+				
 				<div th:if="${#lists.isEmpty(cliente.facturas)}" class="alert alert-info my-4 text-center" th:text="'Sin facturas'"></div>
 				<table th:if="${not #lists.isEmpty(cliente.facturas)}" class="table table-bordered table-striped my-4">
 					<th>
@@ -33,8 +33,7 @@
 							<th>Descripcion</th>
 							<th>Fecha</th>
 							<th>Total</th>
-							<th>Ver</th>
-							<th>Eliminar</th>
+							<th>Acciones</th>
 						</tr>
 					</th>
 					<tbody>
@@ -43,8 +42,10 @@
 							<td th:text="${factura.descripcion}"></td>
 							<td th:text="${factura.createdAt}"></td>
 							<td th:text="${factura.total}"></td>
-							<td><a class="btn btn-primary" th:href="@{'/factura/ver/' + ${factura.id}}">Ver</a></td>
-							<td><a class="btn btn-primary" th:href="@{'/factura/eliminar/' + ${factura.id}}" onclick="return confirm('¿Desea eliminar la factura?');">Eliminar</a></td>
+							<td>
+								<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" th:href="@{'/factura/ver/' + ${factura.id}}">Ver</a></td>
+								<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" th:href="@{'/factura/eliminar/' + ${factura.id}}" onclick="return confirm('¿Desea eliminar la factura?');">Eliminar</a>
+							</td>
 						</tr>
 					</tbody>
 				</table>

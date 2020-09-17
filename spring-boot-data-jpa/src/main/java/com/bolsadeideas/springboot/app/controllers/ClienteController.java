@@ -2,21 +2,28 @@ package com.bolsadeideas.springboot.app.controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-
+import java.util.Collection;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.core.io.Resource;
-
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,7 +52,7 @@ public class ClienteController {
 	@Autowired
 	private UploadFileServiceImpl uploadFileServiceImpl;
 
-	//private final Logger log = LoggerFactory.getLogger(getClass());
+	// private final Logger log = LoggerFactory.getLogger(getClass());
 
 	/*
 	 * Se usa expresion regular en la url para que spring no trunce o corte la
@@ -56,6 +63,8 @@ public class ClienteController {
 	 * metodo mapea a la url '/uploads/{filename}' , misma que esta contenida en el
 	 * atriuto th:src del <img> de la vista ver
 	 */
+	// @Secured("ROLE_USER") es equivalente a @PreAuthorize("hasRole('ROL')")
+	@PreAuthorize("hasRole('ROL')")
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
 
@@ -71,6 +80,7 @@ public class ClienteController {
 				.body(recurso);
 	}
 
+	@Secured("ROLE_USER")
 	@GetMapping(value = "/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
@@ -86,8 +96,40 @@ public class ClienteController {
 		return "ver";
 	}
 
-	@RequestMapping(value = "listar", method = RequestMethod.GET)
-	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+	@RequestMapping(value = { "/listar", "/" }, method = RequestMethod.GET)
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
+			Authentication authentication, HttpServletRequest request) {
+
+		if (authentication != null) {
+
+		}
+
+		/* Forma de revisar si un usuario tiene un rol, de forma manual */
+		if (hasRole("ROLE_ADMIN")) {
+
+		}
+
+		/* Otra forma de revisar si un usuario tiene un rol */
+		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,
+				"");
+		if (securityContext.isUserInRole("ROLE_ADMIN")) {
+
+		}
+
+		/*
+		 * Tercer forma de revisar si un usuario tiene un rol, de forma nativa, con el
+		 * httpServletRequest
+		 */
+		if (request.isUserInRole("ROLE_ADMIN")) {
+
+		}
+
+		/**
+		 * De esta forma es pisible obtener informacion del usuario autenticado en
+		 * cualquier nivel de la aplicacion (forma estatica), la otra es con el objeto
+		 * autentication, a traves de inyeccion de dependencia
+		 */
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		Pageable pageRequest = PageRequest.of(page, 3);
 
@@ -100,6 +142,7 @@ public class ClienteController {
 		return "listar";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form")
 	public String crear(Map<String, Object> model) {
 
@@ -182,6 +225,7 @@ public class ClienteController {
 		return "form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 		if (id > 0) {
@@ -195,5 +239,30 @@ public class ClienteController {
 		}
 
 		return "redirect:/listar";
+	}
+
+	private boolean hasRole(String role) {
+		SecurityContext context = SecurityContextHolder.getContext();
+
+		if (context == null) {
+			return false;
+		}
+
+		Authentication auth = context.getAuthentication();
+		if (auth == null) {
+			return false;
+		}
+		/*
+		 * Se instancia un Collection tendra objetos que implementen o hereden de
+		 * GrantedAuthority
+		 */
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+		return authorities.contains(new SimpleGrantedAuthority(role));
+		/*
+		 * for(GrantedAuthority authority: authorities){
+		 * if(role.equals(authority.getAuthority())){ return true; } } return false;
+		 */
+
 	}
 }

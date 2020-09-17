@@ -53,12 +53,12 @@ public class UploadFileServiceImpl implements IUploadFileService {
     @Override
     public boolean delete(String filename) {
         Path rootPath = getPath(filename);
-			File archivo = rootPath.toFile();
-			if (archivo.exists() && archivo.canRead()) {
-				if (archivo.delete()) {
-					return true;
-				}
-			}
+        File archivo = rootPath.toFile();
+        if (archivo.exists() && archivo.canRead()) {
+            if (archivo.delete()) {
+                return true;
+            }
+        }
         return false;
     }
 
