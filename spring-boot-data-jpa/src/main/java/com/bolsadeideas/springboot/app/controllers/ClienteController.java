@@ -3,13 +3,14 @@ package com.bolsadeideas.springboot.app.controllers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,6 +52,9 @@ public class ClienteController {
 
 	@Autowired
 	private UploadFileServiceImpl uploadFileServiceImpl;
+
+	@Autowired
+	private MessageSource messageSource;
 
 	// private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -98,7 +102,7 @@ public class ClienteController {
 
 	@RequestMapping(value = { "/listar", "/" }, method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
-			Authentication authentication, HttpServletRequest request) {
+			Authentication authentication, HttpServletRequest request, Locale locale) {
 
 		if (authentication != null) {
 
@@ -136,7 +140,7 @@ public class ClienteController {
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
 
 		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
-		model.addAttribute("titulo", "Listado de clientes");
+		model.addAttribute("titulo", messageSource.getMessage("text.cliente.listar.titulo", null, locale));
 		model.addAttribute("clientes", clientes);
 		model.addAttribute("page", pageRender);
 		return "listar";

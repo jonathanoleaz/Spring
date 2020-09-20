@@ -43,7 +43,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
          * Internamente se agregan interceptores para identificar las rutas con el
          * usuario loggeado
          */
-        http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**", "/listar").permitAll()
+        http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**", "/listar", "/locale").permitAll()
                 /*
                  * .antMatchers("/ver/**").hasAnyRole("USER")
                  * .antMatchers("/uploads/**").hasAnyRole("USER")
