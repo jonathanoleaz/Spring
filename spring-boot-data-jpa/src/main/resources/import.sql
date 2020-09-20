@@ -1044,3 +1044,11 @@ INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES (1,1,1);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES (1,1,2);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES (1,1,3);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES (1,1,4);
+
+
+INSERT INTO users (username, password) values ('jonathanoleaz', '$2a$10$3MzYgJ88A2bvWpeIZua.f.89384RY9Lo29Ib4SPHyRvdpReRB64Tm');
+INSERT INTO users (username, password) values ('admin', '$2a$10$ULLjXUDZTfpKrLBLNt14vuQdIiMWrj5yISsax2SIg69EKOK1d9w.q');
+
+INSERT INTO authorities (user_id, authority) values (1, 'ROLE_USER');
+INSERT INTO authorities (user_id, authority) values (2, 'ROLE_USER');
+INSERT INTO authorities (user_id, authority) values (2, 'ROLE_ADMIN');

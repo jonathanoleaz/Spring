@@ -3,6 +3,7 @@ package com.bolsadeideas.springboot.app;
 import javax.sql.DataSource;
 
 import com.bolsadeideas.springboot.app.auth.handler.LoginSuccesHandler;
+import com.bolsadeideas.springboot.app.models.service.JpaUserDetailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * La anotacion EnableGlobalMethodSecurity habilita entre otras cosas, el uso de
@@ -36,6 +34,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JpaUserDetailService jpaUserDetailService;
     /* Implementacion para las rutas */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -58,15 +58,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().permitAll().and().exceptionHandling().accessDeniedPage("/error_403");
     }
 
-    /** Se guardan usuarios en memoria */
+    
     @Autowired
     public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
 
+        builder.userDetailsService(jpaUserDetailService).passwordEncoder(passwordEncoder);
+        /*Configuracion el builder usando autenticacion con consulta nativa SQL 
         builder.jdbcAuthentication().dataSource(dataSource)
         .passwordEncoder(passwordEncoder)
-        .usersByUsernameQuery("select username, password, enabled from users where username=?")
-        .authoritiesByUsernameQuery("select user.username, aut.authority from authorities aut inner join users user on (aut.user_id = user.id) where user.username=?");
+        .usersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username=?")
+        .authoritiesByUsernameQuery("SELECT user.username, aut.authority FROM authorities aut INNER JOIN users user ON (aut.user_id = user.id) WHERE user.username=?");
+        */
 
+
+        /*Configuramos el builder creando usuarios en memoria */
         //PasswordEncoder encoder = this.passwordEncoder;
         /**
          * expresion lambda: por cada usuario registrado, se hashea la contrasenia.
