@@ -20,6 +20,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "facturas")
@@ -96,6 +100,15 @@ public class Factura implements Serializable {
         this.createdAt = createdAt;
     }
 
+    /*
+     * Anotacion para evitar que al generar xml, se genere ciclo infinito, del tipo:
+     * un cliente tiene uan factura y una factura tiene un cliente... pues la
+     * relacion es bidireccional.
+     * 
+     * @JsonBackReference: atributo trasero de la referencia, se omitira de la serializacion a json
+     */
+    @XmlTransient()
+    @JsonBackReference
     public Cliente getCliente() {
         return cliente;
     }

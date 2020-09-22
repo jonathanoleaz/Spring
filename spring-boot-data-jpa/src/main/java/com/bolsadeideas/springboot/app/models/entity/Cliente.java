@@ -20,6 +20,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -46,6 +50,7 @@ public class Cliente implements Serializable {
 	@Column(name = "created_at")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createdAt;
 
 	/** Un cliente tiene muchas facturas */
@@ -57,8 +62,12 @@ public class Cliente implements Serializable {
 	 * clase apuntada, esto implica que en Factura, se cree la llave foranea del
 	 * cliente. No usamos JoinColumn porque la relacion se especifica como
 	 * bidireccional.
+	 * 
+	 * 
+	 * @JsonManagedReference: parte delantera, parte seralizada con json
 	 */
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference
 	private List<Factura> facturas;
 
 	private String foto;

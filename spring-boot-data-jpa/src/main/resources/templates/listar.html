@@ -13,6 +13,9 @@
 			</div>
 			<div class="card-body">
 				<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/form}">Crear cliente</a>
+				<a th:href="@{'/listar'(format=csv)}" class="btn btn-success btn-xs float-right" >CSV</a>
+				<a th:href="@{'/listar'(format=xml)}" class="btn btn-outline-success btn-xs float-right" >XML</a>
+				<a th:href="@{'/listar'(format=json)}" class="btn btn-outline-warning btn-xs float-right" >JSON</a>
 				<table class="table table-striped">
 					<thead>
 						<tr>
