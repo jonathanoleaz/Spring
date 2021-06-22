@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head">
+</head>
+
+<body>
+    <header th:replace="layout/layout :: menu"></header>
+    <div class="container py-4">
+        <div class="card">
+            <div class="card-header">Error, sin permisos para acceder</div>
+            <!---<div class="card-body">El usuario <span th:text="${#httpServletRequest.remoteUser}"></span> no tiene permisos para esta pagina.</div>--->
+            <div class="card-body">El usuario <span th:text="${#authentication.name}"></span> no tiene permisos para esta pagina.</div>
+            <div class="card-footer"><a th:href="@{/listar}" class="btn btn-outline-right">Ir a inicio</a></div>
+        </div>
+    </div>
+    
+    <footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
