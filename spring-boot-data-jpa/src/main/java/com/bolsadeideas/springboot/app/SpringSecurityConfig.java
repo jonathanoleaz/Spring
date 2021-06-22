@@ -1,6 +1,6 @@
 package com.bolsadeideas.springboot.app;
 
-import javax.sql.DataSource;
+//import javax.sql.DataSource;
 
 import com.bolsadeideas.springboot.app.auth.handler.LoginSuccesHandler;
 import com.bolsadeideas.springboot.app.models.service.JpaUserDetailService;
@@ -28,15 +28,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginSuccesHandler loginSuccesHandler;
 
-    @Autowired
-    private DataSource dataSource;
+    //@Autowired
+    //private DataSource dataSource;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private JpaUserDetailService jpaUserDetailService;
-    /* Implementacion para las rutas */
+    /* Implementacion para las rutas, para las peticiones http */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /*

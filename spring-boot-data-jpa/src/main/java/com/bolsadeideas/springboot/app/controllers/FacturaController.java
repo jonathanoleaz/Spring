@@ -30,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Con la forma de colocar esta anotacion, toda la administracion de facturas se
  * restringue al rol ADMIN
  */
-/*
+/**
  * Con sessionAttributes se marcan atributos generalmente del model que
  * persistiran mientras dure la peticion, y hasta marcar status.setComplete();
  * se limpiaran

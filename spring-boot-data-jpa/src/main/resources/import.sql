@@ -1,4 +1,4 @@
-
+/*Este script se ejecuta cada que inicia la aplicacion de Java Spring, en esta caso en particular, para llenar las tablas creadas por la aplicacion (JPA, Hibernate, etc). */
 INSERT INTO clientes (nombre, apellido, email, created_at, foto) VALUES ('Kipper', 'Dog', 'correo@mail.com', '2017-07-05', '');
 INSERT INTO clientes (nombre, apellido, email, created_at, foto) VALUES ('Aldo', 'Dog', 'correo@mail.com', '2017-07-05', '');
 INSERT INTO clientes (nombre, apellido, email, created_at, foto) VALUES ('Shakira', 'Dog', 'correo@mail.com', '2017-07-05', '');

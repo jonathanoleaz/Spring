@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.bolsadeideas.demo.errors.UsuarioNoEncontradoException;
 
-/*Para capturar lanzamiento de excepciones, en ve de mapear a una ruta, se mapea a una excepcion*/
+/*Para capturar lanzamiento de excepciones, en debe mapear a una ruta, se mapea a una excepcion*/
 @ControllerAdvice
 public class ErrorHandlerController {
 

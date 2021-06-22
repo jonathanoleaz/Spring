@@ -58,11 +58,11 @@ public class ClienteController {
 
 	// private final Logger log = LoggerFactory.getLogger(getClass());
 
-	/*
+	/**
 	 * Se usa expresion regular en la url para que spring no trunce o corte la
 	 * extension del archivo
 	 */
-	/*
+	/**
 	 * Implementacion manual o programatica para enviar una imagen, notar que el
 	 * metodo mapea a la url '/uploads/{filename}' , misma que esta contenida en el
 	 * atriuto th:src del <img> de la vista ver
@@ -133,7 +133,7 @@ public class ClienteController {
 		 * cualquier nivel de la aplicacion (forma estatica), la otra es con el objeto
 		 * autentication, a traves de inyeccion de dependencia
 		 */
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		//Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		Pageable pageRequest = PageRequest.of(page, 3);
 

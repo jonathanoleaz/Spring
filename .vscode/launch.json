@@ -1,0 +1,74 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-DemoApplication<demo>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.bolsedeideas.springboot.web.app.DemoApplication",
+            "projectName": "demo",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringBootErrorApplication<spring-boot-error>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.bolsadeideas.demo.SpringBootErrorApplication",
+            "projectName": "spring-boot-error",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringBootHorarioApplication<spring-boot-horario>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.example.demo.SpringBootHorarioApplication",
+            "projectName": "spring-boot-horario",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-FacturacionApplication<facturacion>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.example.facturacion.FacturacionApplication",
+            "projectName": "facturacion",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringBootDiApplication<spring-boot-di>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.bolsedeideas.springboot.di.app.SpringBootDiApplication",
+            "projectName": "spring-boot-di",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringBootFormApplication<spring-boot-form>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.bolsadeindeas.springboot.form.app.SpringBootFormApplication",
+            "projectName": "spring-boot-form",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringBootDataJpaApplication<springboot-data-jpa>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.bolsadeideas.springboot.app.SpringBootDataJpaApplication",
+            "projectName": "springboot-data-jpa",
+            "args": ""
+        }
+    ]
+}

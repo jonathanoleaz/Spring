@@ -8,7 +8,7 @@
         <ul class="pagination">
             <li class="page-item" th:class="${page.first? 'page-item disabled': 'page-item'}">
                 <span class="page-link" th:if="${page.first}">Primera</span>
-                <a class="page-link" th:if="${not page.first}" th:href="@{${page.url}(page=0)}">Primera</a>
+                <a class="page-link" th:if="${not page.first}" th:href="@{${page.url}(page=0)}">Primera</a> <!-- Link para ir a la primer pagina -->
             </li>
 
 

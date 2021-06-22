@@ -18,8 +18,8 @@ public class AppController {
 
 	@GetMapping("/index")
 	public String index() {
-		//Integer valor=0/0;
-		//Integer valor= Integer.parseInt("10v");
+		/*Integer valor=0/0;
+		Integer valor= Integer.parseInt("10v");*/
 		return "index";
 	}
 	
@@ -34,7 +34,7 @@ public class AppController {
 			throw new UsuarioNoEncontradoException(id.toString());
 		}*/
 		model.addAttribute("usuario", usuario);
-		model.addAttribute("titulo", "Detalle del usuario");
+		model.addAttribute("titulo", "Detalle del usuario en ruta ver");
 		return "ver";
 	}
 }

@@ -24,7 +24,6 @@ public class Usuario {
 		this.apellido = apellido;
 	}
 	public Usuario() {
-		// TODO Auto-generated constructor stub
 	}
 	public Usuario(Integer id, String nombre, String apellido) {
 		super();

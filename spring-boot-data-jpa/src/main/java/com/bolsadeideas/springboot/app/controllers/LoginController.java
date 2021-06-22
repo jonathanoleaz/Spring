@@ -32,9 +32,6 @@ public class LoginController {
         if(error != null){
             model.addAttribute("error", "Error en el login: nombre de usuario o contrasenia incorrectos.");
         }
-
-        
-
         return "login";
     }
 }

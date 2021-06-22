@@ -13,7 +13,7 @@ import com.bolsedeideas.springboot.di.app.models.service.IServicio;
 import com.bolsedeideas.springboot.di.app.models.service.MiServicio;
 import com.bolsedeideas.springboot.di.app.models.service.MiServicioComplejo;
 
-/*De este forma se registran los componentes en una configuracion general (y no en cada clase con las anotaciones @Component("miServicioComplejo") y opcionalmente @Primary)*/
+/** De esta forma se registran los componentes en una configuracion general (y no en cada clase con las anotaciones @Component("miServicioComplejo") y opcionalmente @Primary) */
 @Configuration
 public class AppConfig {
 

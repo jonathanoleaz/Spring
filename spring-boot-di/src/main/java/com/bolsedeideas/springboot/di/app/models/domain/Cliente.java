@@ -8,7 +8,7 @@ import org.springframework.web.context.annotation.RequestScope;
 @RequestScope
 public class Cliente {
 
-	/*Estos valores se definen en el property*/
+	/**Estos valores se definen en el property*/
 	@Value("${cliente.nombre}")
 	private String nombre;
 	

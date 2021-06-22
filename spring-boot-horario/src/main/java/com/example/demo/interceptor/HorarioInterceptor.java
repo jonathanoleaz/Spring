@@ -26,39 +26,35 @@ public class HorarioInterceptor implements HandlerInterceptor {
 	private Integer cierre;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 		Calendar calendar = Calendar.getInstance();
 		int hora = calendar.get(Calendar.HOUR_OF_DAY);
+		int minuto = calendar.get(Calendar.MINUTE);
 
 		logger.info("entro interceptor");
-		//if (hora >= apertura && hora < cierre) {
-			StringBuilder mensaje = new StringBuilder("Bienvenido al horario de atencion a clientes");
-			mensaje.append(", atendemos desde las ");
+		if (hora >= apertura && hora < cierre) {
+			StringBuilder mensaje = new StringBuilder("Bienvenido al horario de atencion a clientes. Son las ");
+			mensaje.append(hora+":"+minuto);
+			mensaje.append(" horas, atendemos desde las ");
 			mensaje.append(apertura);
 			mensaje.append(" hasta las ");
 			mensaje.append(cierre);
-			mensaje.append(" Gracias por la visita ");
+			mensaje.append("\r\n Gracias por la visita. (Texto desde el interceptor). ");
 
 			request.setAttribute("mensaje", mensaje.toString());
-
-			//return true;
-		//}
+			return true;
+		}
 		response.sendRedirect(request.getContextPath().concat("/cerrado"));
 		return false;
-
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
-		// TODO Auto-generated method stub
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		String mensaje = (String) request.getAttribute("mensaje");
 		
 		if(modelAndView != null && handler instanceof HandlerMethod) {
 			modelAndView.addObject("horario", mensaje);
 		}
 	}
-
 }

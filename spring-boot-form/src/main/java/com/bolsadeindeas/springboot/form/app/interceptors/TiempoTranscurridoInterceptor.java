@@ -1,6 +1,6 @@
 package com.bolsadeindeas.springboot.form.app.interceptors;
 
-import java.util.Random;
+//import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,12 +30,12 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor{
         logger.info("TiempoTranscurridoInterceptor: preHandle() entrando ...");
         long tiempoInicio = System.currentTimeMillis();
         
-        /*Guardamos en atributo de sesion el tiempo de inicio */
+        /*Guardamos en atributo de request el tiempo de inicio */
         request.setAttribute("tiempoInicio", tiempoInicio);
 
-        Random random=new Random();
+        //Random random=new Random();
         /*entero aleatorio entre 0 y 499 */
-        Integer demora = random.nextInt(500);
+        //Integer demora = random.nextInt(500);
         //Thread.sleep(demora);
 
         return true;

@@ -1,6 +1,6 @@
 package com.bolsadeindeas.springboot.form.app;
 
-import com.bolsadeindeas.springboot.form.app.interceptors.TiempoTranscurridoInterceptor;
+//import com.bolsadeindeas.springboot.form.app.interceptors.TiempoTranscurridoInterceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -19,18 +19,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 		this.lista.add(new Usuario(1, "Humberto", "Loera"));
 		this.lista.add(new Usuario(2, "Aldo", "Flores"));
 		this.lista.add(new Usuario(3, "Petronilo", "Sevilla"));
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public List<Usuario> listar() {
-		// TODO Auto-generated method stub
 		return this.lista;
 	}
 
 	@Override
 	public Usuario obtenerPorId(Integer id) {
-		// TODO Auto-generated method stub
 		Usuario resultado=null;
 		for(Usuario us: this.lista) {
 			if(us.getId().equals(id)) {
@@ -44,7 +41,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	/*Con Optional, se retorna el usuario encontrado, sino se encontró devuelve null*/
 	@Override
 	public Optional<Usuario> obtenerPorIdOptional(Integer id) {
-		// TODO Auto-generated method stub
 		Usuario usuario=this.obtenerPorId(id);
 		return Optional.ofNullable(usuario);
 	}

@@ -1,6 +1,6 @@
 package com.bolsedeideas.springboot.web.app.models;
 
-/*Las clases de model POJOs deben ser desacopladas de cualquier frameowrk o API*/
+/*Las clases de model POJOs deben ser desacopladas de cualquier framework o API*/
 public class Usuario {
 	private String nombre;
 	private String apellido;
