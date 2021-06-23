@@ -1,10 +1,9 @@
 package com.bolsadeideas.springboot.app;
 
 import com.bolsadeideas.springboot.app.auth.filter.JWTAuthenticationFilter;
+import com.bolsadeideas.springboot.app.auth.filter.JWTAuthorizationFilter;
 
-//import javax.sql.DataSource;
-
-import com.bolsadeideas.springboot.app.auth.handler.LoginSuccesHandler;
+import com.bolsadeideas.springboot.app.auth.service.JWTService;
 import com.bolsadeideas.springboot.app.models.service.JpaUserDetailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private LoginSuccesHandler loginSuccesHandler;
 
     //@Autowired
     //private DataSource dataSource;
@@ -39,12 +36,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JpaUserDetailService jpaUserDetailService;
+
+    @Autowired
+    private JWTService jwtService;
     /* Implementacion para las rutas, para las peticiones http */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /*
          * Internamente se agregan interceptores para identificar las rutas con el
-         * usuario loggeado
+         * usuario loggeado.
+         * En este proyecto, ahora se agregan filtros para autenticar y autorizar, ya no la vista login.
+         * 
          */
         http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**"/*, "/listar"*/, "/locale").permitAll()
                 /*
@@ -60,7 +62,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll().and().exceptionHandling().accessDeniedPage("/error_403")*/
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtService))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(),jwtService))
                 .csrf().disable()			/*Se deshabilita csrf*/
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);/*Se deshabilita creacion de sesiones con estado*/
     }
