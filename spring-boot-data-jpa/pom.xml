@@ -10,11 +10,11 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	
-	<groupId>com.bolsadeideas.springboot-data-jpa-tomcat</groupId>
-	<artifactId>springboot-data-jpa-tomcat</artifactId>
+	<groupId>com.bolsadeideas.springboot-data-jpa-jboss</groupId>
+	<artifactId>springboot-data-jpa-jboss</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>spring-boot-data-jpa-tomcat</name>
+	<name>spring-boot-data-jpa-jboss</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
