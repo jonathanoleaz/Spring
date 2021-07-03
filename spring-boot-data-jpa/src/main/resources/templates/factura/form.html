@@ -75,6 +75,7 @@
     </div>
     
     <footer th:replace="layout/layout :: footer"></footer>
+    <input thype="hidden" id="urlAjax" th:value="@{'/factura/cargar-productos/'}">
     <script th:replace="factura/js/autocompleteProductos :: autocomplete-producto" ></script>
 </body>
 </html>
