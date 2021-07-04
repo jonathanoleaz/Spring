@@ -10,11 +10,11 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	
-	<groupId>com.bolsadeideas.springboot-data-jpa-jboss</groupId>
-	<artifactId>springboot-data-jpa-jboss</artifactId>
+	<groupId>com.bolsadeideas.springboot-data-jpa-heroku</groupId>
+	<artifactId>springboot-data-jpa-heroku</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>spring-boot-data-jpa-jboss</name>
+	<packaging>jar</packaging>
+	<name>spring-boot-data-jpa-heroku</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
