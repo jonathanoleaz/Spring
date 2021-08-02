@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
@@ -17,7 +18,15 @@ export class ClientesComponent implements OnInit {
    * Evento llamado cuando se inicia el componente
    */
   ngOnInit() {
-    this.clienteService.getClientes().subscribe(
+    this.clienteService.getClientes().pipe(
+      tap(clientes=>{
+        console.log("Tap3 desde componente de clientes");
+        clientes.forEach(cliente => {
+          console.log(cliente.nombre);
+        });
+      })
+    )
+    .subscribe(
       (clientes) => {
         this.clientes = clientes
       }

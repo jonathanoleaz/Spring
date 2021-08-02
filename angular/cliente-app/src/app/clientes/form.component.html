@@ -1,3 +1,8 @@
+<ul class="alert alert-danger" *ngIf="errores?.length > 0">
+    <li *ngFor="let err of errores">
+        {{ err }}
+    </li>
+</ul>
 <div class="card bg-dark text-white">
     <div class="card-header">{{titulo}}</div>
     <div class="card-body">
@@ -5,7 +10,7 @@
             <div class="form-group row">
                 <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" required minlength="4" #nombre="ngModel">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre"  #nombre="ngModel"> <!--required minlength="4"-->
                     <div class="alert alrte-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
                         <div *ngIf="nombre.errors.required">
                             Nombre requerido

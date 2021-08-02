@@ -8,10 +8,10 @@
         <table class="table table-hover table-bordered table-striped" *ngIf="clientes?.length>0">
             <thead>
                 <th>id</th>
-                <th>nombre</th>
-                <th>apellido</th>
-                <th>email</th>
-                <th>fecha</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Fecha</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
             </thead>
@@ -20,9 +20,9 @@
             <tr *ngFor="let cliente of clientes">
                 <td> {{ cliente.id }} </td>
                 <td> {{ cliente.nombre }} </td>
-                <td> {{ cliente.apellido }} </td>
+                <td> {{ cliente.apellido | uppercase}} </td>
                 <td> {{ cliente.email }} </td>
-                <td> {{ cliente.createAt }} </td>
+                <td> {{ cliente.createAt | uppercase}} </td>
                 <td> 
                     <button type="button" name="editar" [routerLink]="['/clientes/form', cliente.id]" class="btn btn-secondary btn-sm">Editar</button>     
                 </td>
