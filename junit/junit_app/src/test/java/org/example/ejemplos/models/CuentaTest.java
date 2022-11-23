@@ -3,6 +3,8 @@ package org.example.ejemplos.models;
 import org.example.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
@@ -223,6 +225,31 @@ class CuentaTest {
         void testDevEnv(){
 
         }
+    }
+
+    @RepeatedTest(value=5, name="Repeticion numero {currentRepetition} de {totalRepetition}")
+    void testDebitoCuentaRepetir(RepetitionInfo info) {
+        if(info.getCurrentRepetition()==3){
+            System.out.println("Tercera iteracion de prueba");
+        }
+        cuenta = new Cuenta("Andres", new BigDecimal("1000.123"));
+        cuenta.debito(new BigDecimal(100));
+        assertNotNull(cuenta.getSaldo());
+        assertEquals(900, cuenta.getSaldo().intValue());
+        assertEquals("900.123", cuenta.getSaldo().toPlainString());
+    }
+
+
+    @ParameterizedTest
+    @ValueSource(strings = {"100", "200", "300", "500", "700"})
+    void testDebitoCuenta(String monto) {
+        cuenta = new Cuenta("Andres", new BigDecimal("1000.123"));
+        BigDecimal saldoOriginal = cuenta.getSaldo();
+        cuenta.debito(new BigDecimal(monto));
+        assertNotNull(cuenta.getSaldo());
+
+        assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+        assertEquals(saldoOriginal.subtract(new BigDecimal(monto)), cuenta.getSaldo());
     }
 
 }
