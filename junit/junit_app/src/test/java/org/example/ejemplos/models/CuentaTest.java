@@ -4,9 +4,17 @@ import org.example.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.*;
@@ -15,8 +23,8 @@ class CuentaTest {
     Cuenta cuenta;
 
     @BeforeEach
-    void initMetodoTest(){
-
+    void initMetodoTest(TestInfo testInfo, TestReporter testReporter){
+        System.out.println("Ejecutando: "+testInfo.getDisplayName()+ " - " +testInfo.getTestMethod().get().getName());
         //instanciar los objetos de esta forma (en un metodo BeforeEach es mala practica porque podria tenderse a poner estado de este objeto en este metodo,
         // y se acoplarian los metodos
         this.cuenta = new Cuenta("Jonathan", new BigDecimal("3.14159"));
@@ -40,6 +48,7 @@ class CuentaTest {
         System.out.println("Terminando test");
     }
 
+    @Tag("cuenta")
     @Nested
     class CuentaTestAtributosCuenta{
         @Test
@@ -239,17 +248,84 @@ class CuentaTest {
         assertEquals("900.123", cuenta.getSaldo().toPlainString());
     }
 
+    @Tag("Param")
+    @Nested
+    class PruebasParametrizadasTest{
+        @ParameterizedTest
+        @ValueSource(strings = {"100", "200", "300", "500", "700"})
+        void testDebitoCuentaValueSource(String monto) {
+            cuenta = new Cuenta("Andres", new BigDecimal("1000.123"));
+            BigDecimal saldoOriginal = cuenta.getSaldo();
+            cuenta.debito(new BigDecimal(monto));
+            assertNotNull(cuenta.getSaldo());
 
-    @ParameterizedTest
-    @ValueSource(strings = {"100", "200", "300", "500", "700"})
-    void testDebitoCuenta(String monto) {
-        cuenta = new Cuenta("Andres", new BigDecimal("1000.123"));
-        BigDecimal saldoOriginal = cuenta.getSaldo();
-        cuenta.debito(new BigDecimal(monto));
-        assertNotNull(cuenta.getSaldo());
+            assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+            assertEquals(saldoOriginal.subtract(new BigDecimal(monto)), cuenta.getSaldo());
+        }
 
-        assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
-        assertEquals(saldoOriginal.subtract(new BigDecimal(monto)), cuenta.getSaldo());
+        @ParameterizedTest
+        @CsvSource({"1,100", "2,200", "3,300", "4,500", "5,700"})
+        void testDebitoCuentaCsvSource(String index, String monto) {
+            cuenta = new Cuenta("Andres", new BigDecimal("1000.123"));
+            BigDecimal saldoOriginal = cuenta.getSaldo();
+            cuenta.debito(new BigDecimal(monto));
+            assertNotNull(cuenta.getSaldo());
+
+            assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+            assertEquals(saldoOriginal.subtract(new BigDecimal(monto)), cuenta.getSaldo());
+        }
+
+        @ParameterizedTest
+        @CsvSource({"200,100,Nombre1,Nombre1", "250,200,Nombre1,Nombre1", "390,300,Nombre1,Nombre1", "900,500,Nombre1,Nombre1", "1200,700,Nombre1,Nombre1"})
+        void testDebitoCuentaCsvSource2(String saldo, String monto, String esperado, String actual) {
+            cuenta = new Cuenta(actual, new BigDecimal(saldo));
+            BigDecimal saldoOriginal = cuenta.getSaldo();
+            cuenta.debito(new BigDecimal(monto));
+            assertNotNull(cuenta.getSaldo());
+            assertNotNull(cuenta.getPersona());
+            assertEquals(cuenta.getPersona(), esperado);
+            assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+            assertEquals(saldoOriginal.subtract(new BigDecimal(monto)), cuenta.getSaldo());
+        }
+
+        @ParameterizedTest
+        @MethodSource("montoLista")
+        void testDebitoCuentaCsvSource(String monto) {
+            cuenta = new Cuenta("Andres", new BigDecimal("1000.123"));
+            BigDecimal saldoOriginal = cuenta.getSaldo();
+            cuenta.debito(new BigDecimal(monto));
+            assertNotNull(cuenta.getSaldo());
+
+            assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+            assertEquals(saldoOriginal.subtract(new BigDecimal(monto)), cuenta.getSaldo());
+        }
+
+        static List<String> montoLista(){
+            return Arrays.asList("100", "200", "300", "500", "700");
+        }
+    }
+
+    @Nested
+    @Tag("timeout")
+    class EjemploTimeoutTest{
+        @Test
+        @Timeout(value=5)
+        void pruebaTimeout() throws InterruptedException {
+            TimeUnit.SECONDS.sleep(1);
+        }
+
+        @Test
+        @Timeout(value=5000, unit = TimeUnit.MILLISECONDS)
+        void pruebaTimeout2() throws InterruptedException {
+            TimeUnit.SECONDS.sleep(1);
+        }
+
+        @Test
+        void testTimeOutAssertions(){
+            assertTimeout(Duration.ofSeconds(5), () ->{
+                TimeUnit.SECONDS.sleep(1);
+            });
+        }
     }
 
 }
