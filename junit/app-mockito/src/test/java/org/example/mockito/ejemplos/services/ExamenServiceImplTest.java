@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
+
 
 class ExamenServiceImplTest {
     //Con la anotacion @Mock se crean como mocks
@@ -104,5 +107,31 @@ class ExamenServiceImplTest {
         //Verificamos que en repository se invoque el metodo findAll
         verify(repository).findAll();
         //verify(preguntaRepository).findPreguntasPorExamenId(5L);
+    }
+
+    @Test
+    void testGuardarExamen() {
+        // Given
+        Examen newExamen = Datos.EXAMEN;
+        newExamen.setPreguntas(Datos.PREGUNTAS);
+        when(repository.guardar(any(Examen.class))).then(new Answer<Examen>(){
+            Long secuencia = 8L;
+            @Override
+            public Examen answer(InvocationOnMock invocation) throws Throwable {
+                Examen examen = invocation.getArgument(0);
+                examen.setId(secuencia++);
+                return examen;
+            }
+        });
+
+        //When
+        Examen examen = service.guardar(newExamen);
+
+        // Then
+        assertNotNull(examen.getId());
+        assertEquals(8L, examen.getId());
+        assertEquals("Fisica", examen.getNombre());
+        verify(repository).guardar(any(Examen.class));
+        verify(preguntaRepository).guardarVarias(anyList());
     }
 }
