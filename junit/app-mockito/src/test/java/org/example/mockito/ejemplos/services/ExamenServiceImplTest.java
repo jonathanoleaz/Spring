@@ -1,9 +1,11 @@
 package org.example.mockito.ejemplos.services;
 
+import org.example.mockito.ejemplos.Datos;
 import org.example.mockito.ejemplos.models.Examen;
 import org.example.mockito.ejemplos.repositories.ExamenRepository;
 import org.example.mockito.ejemplos.repositories.ExamenRepositoryImpl;
 import org.example.mockito.ejemplos.repositories.PreguntaRepository;
+import org.example.mockito.ejemplos.repositories.PreguntaRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -23,9 +25,9 @@ import static org.mockito.Mockito.*;
 class ExamenServiceImplTest {
     //Con la anotacion @Mock se crean como mocks
     @Mock
-    ExamenRepository repository;
+    ExamenRepositoryImpl repository;
     @Mock
-    PreguntaRepository preguntaRepository;
+    PreguntaRepositoryImpl preguntaRepository;
     //Con la anotacion @InjectMocks se inyectac los mocks
     @InjectMocks
     ExamenServiceImpl service;
@@ -281,5 +283,43 @@ class ExamenServiceImplTest {
         assertEquals("Fisica", examen.getNombre());
         verify(repository).guardar(any(Examen.class));
         verify(preguntaRepository).guardarVarias(anyList());
+    }
+
+    @Test
+    void testDoCallRealMethod() {
+        when(repository.findAll()).thenReturn(Datos.EXAMENES);
+        //when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS);
+
+        //Con el metodo doCallRealMethod se pueden invocar metodos reales en vez de metodos mockeados, pero debe ejecutarse sobre una clase concreta o implementacion, no sobre una interfaz
+        doCallRealMethod().when(preguntaRepository).findPreguntasPorExamenId(anyLong());
+
+        Examen examen = service.findExamenPorNombreConPreguntas("Matematicas");
+
+        assertEquals(5L, examen.getId());
+        assertEquals("Matematicas", examen.getNombre());
+    }
+
+    @Test
+    void testSpy() {
+        //el mock es 100% simulado, todos sus metodos son mockeados
+        //con spy, solo los metodos especificados son mockeados, la invocación de los demas metodos es real,
+        // por lo tanto al instanciar un spy, debemos hacerlo con clases concretas o implementaciones, no con interfaces
+        ExamenRepository examenRepository = spy(ExamenRepositoryImpl.class);
+        PreguntaRepository preguntaRepository = spy(PreguntaRepositoryImpl.class);
+        ExamenService examenService = new ExamenServiceImpl(examenRepository, preguntaRepository);
+
+        List<String> preguntas = Arrays.asList("aritmetica");
+        //Cuando trabajamos con Spy, no se sugiere usar when porque when invoca al metodo real, se sugiere el do
+        //when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(preguntas);
+        doReturn(preguntas).when(preguntaRepository).findPreguntasPorExamenId(anyLong());
+
+        Examen examen = examenService.findExamenPorNombreConPreguntas("Matematicas");
+        assertEquals(5L, examen.getId());
+        assertEquals("Matematicas", examen.getNombre());
+        assertEquals(1, examen.getPreguntas().size());
+        assertTrue(examen.getPreguntas().contains("aritmetica"));
+
+        verify(examenRepository).findAll();
+        verify(preguntaRepository).findPreguntasPorExamenId(anyLong());
     }
 }

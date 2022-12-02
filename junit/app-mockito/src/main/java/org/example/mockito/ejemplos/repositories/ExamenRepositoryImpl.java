@@ -1,5 +1,6 @@
 package org.example.mockito.ejemplos.repositories;
 
+import org.example.mockito.ejemplos.Datos;
 import org.example.mockito.ejemplos.models.Examen;
 
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class ExamenRepositoryImpl implements ExamenRepository{
     @Override
     public Examen guardar(Examen examen) {
-        return null;
+        return Datos.EXAMEN;
     }
 
     @Override
@@ -21,6 +22,6 @@ public class ExamenRepositoryImpl implements ExamenRepository{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return Collections.emptyList();
+        return Datos.EXAMENES;
     }
 }
