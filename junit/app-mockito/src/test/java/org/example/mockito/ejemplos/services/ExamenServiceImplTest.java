@@ -212,4 +212,74 @@ class ExamenServiceImplTest {
 
         assertEquals(-5L, captor.getValue());
     }
+
+    @Test
+    void testDoThrow(){
+        Examen examen = Datos.EXAMEN;
+        examen.setPreguntas(Datos.PREGUNTAS);
+
+        //Do throw es util para lanzar excepciones en los mock con metodos void
+        doThrow(IllegalArgumentException.class).when(preguntaRepository).guardarVarias(anyList());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.guardar(examen);
+        });
+    }
+
+    @Test
+    void testDoAnswer(){
+
+        when(repository.findAll()).thenReturn(Datos.EXAMENES);
+        //when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS);
+
+        //Ejemplo sobre como devolver una respuesta mas personalizada, en este caso, una respuesta con condicion
+        doAnswer(invocation -> {
+            Long id = invocation.getArgument(0);
+            return id==5L? Datos.PREGUNTAS : Collections.emptyList();
+        }).when(preguntaRepository).findPreguntasPorExamenId(anyLong());
+
+        Examen examen = service.findExamenPorNombreConPreguntas("Matematicas");
+
+        assertEquals(5L, examen.getId());
+        assertEquals("Matematicas", examen.getNombre());
+        assertEquals(5, examen.getPreguntas().size());
+
+        verify(preguntaRepository).findPreguntasPorExamenId(anyLong());
+    }
+
+    @Test
+    void testDoAnswerGuardarExamen() {
+        // Given
+        Examen newExamen = Datos.EXAMEN;
+        newExamen.setPreguntas(Datos.PREGUNTAS);
+        /*when(repository.guardar(any(Examen.class))).then(new Answer<Examen>(){
+            Long secuencia = 8L;
+            @Override
+            public Examen answer(InvocationOnMock invocation) throws Throwable {
+                Examen examen = invocation.getArgument(0);
+                examen.setId(secuencia++);
+                return examen;
+            }
+        });*/
+
+        doAnswer(new Answer<Examen>(){
+            Long secuencia = 8L;
+            @Override
+            public Examen answer(InvocationOnMock invocation) throws Throwable {
+                Examen examen = invocation.getArgument(0);
+                examen.setId(secuencia++);
+                return examen;
+            }
+        }).when(repository).guardar(any(Examen.class));
+
+        //When
+        Examen examen = service.guardar(newExamen);
+
+        // Then
+        assertNotNull(examen.getId());
+        assertEquals(8L, examen.getId());
+        assertEquals("Fisica", examen.getNombre());
+        verify(repository).guardar(any(Examen.class));
+        verify(preguntaRepository).guardarVarias(anyList());
+    }
 }
