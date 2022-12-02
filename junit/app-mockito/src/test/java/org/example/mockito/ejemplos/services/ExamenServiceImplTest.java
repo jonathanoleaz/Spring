@@ -6,10 +6,7 @@ import org.example.mockito.ejemplos.repositories.ExamenRepositoryImpl;
 import org.example.mockito.ejemplos.repositories.PreguntaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -133,5 +130,66 @@ class ExamenServiceImplTest {
         assertEquals("Fisica", examen.getNombre());
         verify(repository).guardar(any(Examen.class));
         verify(preguntaRepository).guardarVarias(anyList());
+    }
+
+    @Test
+    void testManejoExcepcion(){
+        when(repository.findAll()).thenReturn(Datos.EXAMENES);
+        when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenThrow(IllegalArgumentException.class);
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.findExamenPorNombreConPreguntas("Matematicas");
+        });
+        verify(repository).findAll();
+        verify(preguntaRepository).findPreguntasPorExamenId(anyLong());
+    }
+
+    @Test
+    void testArgumentMatchers() {
+        when(repository.findAll()).thenReturn(Datos.EXAMENES);
+        when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS);
+        service.findExamenPorNombreConPreguntas("Matematicas");
+
+        verify(repository).findAll();
+        //Comprobacion de argumentos
+        verify(preguntaRepository).findPreguntasPorExamenId(ArgumentMatchers.argThat(arg -> arg.equals(5L)));
+        //Comprobacion de argumentos equivalente a ArgumentMatchers.argThat(arg -> arg.equals(5L))
+        verify(preguntaRepository).findPreguntasPorExamenId(eq(5L));
+    }
+
+    @Test
+    void testArgumentMatchers2() {
+        when(repository.findAll()).thenReturn(Datos.EXAMENES_ID_NEGATIVOS);
+        when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS);
+        service.findExamenPorNombreConPreguntas("Matematicas");
+
+        verify(repository).findAll();
+        //Comprobacion de argumentos
+        verify(preguntaRepository).findPreguntasPorExamenId(argThat(new MiArgsMatchers()));
+    }
+
+    @Test
+    void testArgumentMatchers3() {
+        when(repository.findAll()).thenReturn(Datos.EXAMENES_ID_NEGATIVOS);
+        when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS);
+        service.findExamenPorNombreConPreguntas("Matematicas");
+
+        verify(repository).findAll();
+        //Comprobacion de argumentos
+        verify(preguntaRepository).findPreguntasPorExamenId(argThat((argument) -> argument != null && argument != 0));
+    }
+
+    public static class MiArgsMatchers implements ArgumentMatcher<Long>{
+        private Long argument;
+
+        @Override
+        public boolean matches(Long argument){
+            this.argument = argument;
+            return argument != null && argument != 0;
+        }
+
+        @Override
+        public String toString(){
+            return "clase para mensaje personalizado de error qie se imprime al fallar el test: Debe ser entero positivo "+argument;
+        }
     }
 }
