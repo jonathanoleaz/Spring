@@ -30,6 +30,10 @@ class ExamenServiceImplTest {
     @InjectMocks
     ExamenServiceImpl service;
 
+    //Lo siguiente es equivalente a ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+    @Captor
+    ArgumentCaptor<Long> captor2;
+
     @BeforeEach
     void setUp(){
         //Habilitamos el uso de anotaciones de Mockito
@@ -191,5 +195,21 @@ class ExamenServiceImplTest {
         public String toString(){
             return "clase para mensaje personalizado de error qie se imprime al fallar el test: Debe ser entero positivo "+argument;
         }
+    }
+
+    @Test
+    void testArgumentCaptor(){
+        when(repository.findAll()).thenReturn(Datos.EXAMENES_ID_NEGATIVOS);
+        when(preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS);
+        service.findExamenPorNombreConPreguntas("Matematicas");
+
+        //captor se declara de forma "manual"
+        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+        verify(preguntaRepository).findPreguntasPorExamenId(captor.capture());
+
+        //captor2 se declara a traves de anotaciones
+        verify(preguntaRepository).findPreguntasPorExamenId(captor2.capture());
+
+        assertEquals(-5L, captor.getValue());
     }
 }
