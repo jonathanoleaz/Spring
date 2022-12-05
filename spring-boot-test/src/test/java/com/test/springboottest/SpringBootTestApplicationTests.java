@@ -6,11 +6,11 @@ import com.test.springboottest.models.Cuenta;
 import com.test.springboottest.repositories.BancoRepository;
 import com.test.springboottest.repositories.CuentaRepository;
 import com.test.springboottest.services.CuentaService;
-import com.test.springboottest.services.CuentasServiceImpl;
 import com.test.springboottest.services.Datos;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
 
@@ -20,18 +20,22 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class SpringBootTestApplicationTests {
 
+	@MockBean
 	CuentaRepository cuentaRepository;
+	@MockBean
 	BancoRepository bancoRepository;
 
+	@Autowired
 	CuentaService service;
 
+	/*
 	@BeforeEach
 	void setUp(){
 		cuentaRepository = mock(CuentaRepository.class);
 		bancoRepository = mock(BancoRepository.class);
 		service = new CuentasServiceImpl(cuentaRepository, bancoRepository);
-
 	}
+	*/
 
 	@Test
 	void contextLoads() {
