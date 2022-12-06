@@ -49,6 +49,15 @@ public class Cuenta {
     }
 
     @Override
+    public String toString() {
+        return "Cuenta{" +
+                "id=" + id +
+                ", persona='" + persona + '\'' +
+                ", saldo=" + saldo +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
