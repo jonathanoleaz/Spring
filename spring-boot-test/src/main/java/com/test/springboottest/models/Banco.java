@@ -1,6 +1,7 @@
 package com.test.springboottest.models;
 
-import jakarta.persistence.*;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "bancos")

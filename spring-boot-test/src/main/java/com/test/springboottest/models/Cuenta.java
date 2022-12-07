@@ -1,8 +1,9 @@
 package com.test.springboottest.models;
 
 import com.test.springboottest.exceptions.DineroInsuficienteException;
-import jakarta.persistence.*;
 
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
