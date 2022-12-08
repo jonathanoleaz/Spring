@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -18,6 +19,18 @@ import java.util.Map;
 public class CuentaController {
     @Autowired
     private CuentaService cuentaService;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Cuenta> listar(){
+        return cuentaService.findAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cuenta guardar(@RequestBody Cuenta cuenta){
+        return cuentaService.save(cuenta);
+    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -39,4 +52,6 @@ public class CuentaController {
         response.put("transaccion", dto);
         return ResponseEntity.ok(response);
     }
+
+
 }

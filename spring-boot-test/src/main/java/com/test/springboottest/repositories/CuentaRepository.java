@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
     @Query("SELECT c FROM Cuenta c where c.persona=?1")
     Optional<Cuenta> findByPersona(String persona);
