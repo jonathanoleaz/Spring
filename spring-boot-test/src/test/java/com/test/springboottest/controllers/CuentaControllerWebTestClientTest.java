@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("integracion_web_test")
 //Esta prueba se considera de integracion, por lo que los metodos pueden definirse con un orden arbitrario
 // en caso de que algunos metodos de prueba modifiquen datos utilizados por otros metodos
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

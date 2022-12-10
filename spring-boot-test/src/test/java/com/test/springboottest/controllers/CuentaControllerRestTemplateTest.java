@@ -9,6 +9,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("integracion_rest_template")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CuentaControllerRestTemplateTest {
@@ -124,8 +126,36 @@ class CuentaControllerRestTemplateTest {
         assertEquals(3L, cuentaCreada.getId());
         assertEquals("Pepe", cuentaCreada.getPersona());
         assertEquals("3800", cuentaCreada.getSaldo().toPlainString());
+    }
+
+    @Test
+    @Order(5)
+    void testEliminar() {
+        ResponseEntity<Cuenta[]> respuesta = client.getForEntity("/api/cuentas", Cuenta[].class);
+        List<Cuenta> cuentas = Arrays.asList(respuesta.getBody());
+
+        assertEquals(HttpStatus.OK, respuesta.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON, respuesta.getHeaders().getContentType());
+        assertEquals(3, cuentas.size());
 
 
+        //client.delete("/api/cuentas/3");
+        Map<String, Long> pathVariable = new HashMap<>();
+        pathVariable.put("id", 3L);
+       ResponseEntity<Void> exchange =  client.exchange("/api/cuentas/{id}", HttpMethod.DELETE, null, Void.class, pathVariable);
+       assertEquals(HttpStatus.NO_CONTENT, exchange.getStatusCode());
+       assertTrue(exchange.hasBody());
 
+        respuesta = client.getForEntity("/api/cuentas", Cuenta[].class);
+        cuentas = Arrays.asList(respuesta.getBody());
+
+        assertEquals(HttpStatus.OK, respuesta.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON, respuesta.getHeaders().getContentType());
+        assertEquals(2, cuentas.size());
+
+        ResponseEntity<Cuenta> respuestaDetalle = client.getForEntity("/api/cuentas/3", Cuenta.class);
+        Cuenta cuenta = respuestaDetalle.getBody();
+        assertEquals(HttpStatus.NOT_FOUND, respuestaDetalle.getStatusCode());
+        assertFalse(respuestaDetalle.hasBody());
     }
 }
